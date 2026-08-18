@@ -19,7 +19,8 @@ import {
   Heart,
   Sun,
   Flame,
-  CheckCircle2
+  CheckCircle2,
+  Mic
 } from 'lucide-react';
 import { CREED_ARTICLES, CREED_PHRASE_EXPLANATIONS } from '../data/creedData';
 import { CreedArticle, CreedPhraseExplanation } from '../types';
@@ -27,13 +28,17 @@ import { audio } from '../utils/audioService';
 
 interface TheologicalDepthProps {
   onPracticeArticle: (articleId?: number) => void;
+  onVoicePracticeArticle?: (articleId?: number) => void;
 }
 
 type StudyMode = 'phrases' | 'articles' | 'history';
 
 const NOTES_STORAGE_KEY = 'apostles_creed_article_notes_v1';
 
-export const TheologicalDepth: React.FC<TheologicalDepthProps> = ({ onPracticeArticle }) => {
+export const TheologicalDepth: React.FC<TheologicalDepthProps> = ({ 
+  onPracticeArticle,
+  onVoicePracticeArticle
+}) => {
   const [studyMode, setStudyMode] = useState<StudyMode>('phrases');
   const [selectedSection, setSelectedSection] = useState<'All' | 'Father' | 'Son' | 'Holy Spirit'>('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -350,6 +355,17 @@ export const TheologicalDepth: React.FC<TheologicalDepthProps> = ({ onPracticeAr
                     <span>{isPlayingAudio ? 'Stop' : 'Listen'}</span>
                   </button>
 
+                  {onVoicePracticeArticle && (
+                    <button
+                      id="voice-practice-phrase-btn"
+                      onClick={() => onVoicePracticeArticle(currentPhrase.articleId)}
+                      className="px-3 py-1.5 bg-neutral-950 hover:bg-neutral-850 text-amber-300 border border-amber-500/30 font-medium rounded-xl text-xs transition cursor-pointer flex items-center gap-1.5"
+                    >
+                      <Mic className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Voice Practice</span>
+                    </button>
+                  )}
+
                   <button
                     id="practice-phrase-in-first-letter-btn"
                     onClick={() => onPracticeArticle(currentPhrase.articleId)}
@@ -580,6 +596,17 @@ export const TheologicalDepth: React.FC<TheologicalDepthProps> = ({ onPracticeAr
                     {isPlayingAudio ? <Square className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                     <span>{isPlayingAudio ? 'Stop' : 'Listen'}</span>
                   </button>
+
+                  {onVoicePracticeArticle && (
+                    <button
+                      id="voice-practice-article-btn"
+                      onClick={() => onVoicePracticeArticle(currentArticle.id)}
+                      className="px-3.5 py-2 bg-neutral-950 hover:bg-neutral-850 text-amber-300 border border-amber-500/30 font-medium rounded-xl text-xs transition cursor-pointer flex items-center gap-1.5"
+                    >
+                      <Mic className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Voice Practice</span>
+                    </button>
+                  )}
 
                   <button
                     id="practice-this-article-btn"

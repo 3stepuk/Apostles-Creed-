@@ -145,7 +145,7 @@ export function saveUserStats(stats: UserStats) {
   localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
 }
 
-export function recordActivity(type: 'srs' | 'first_letter' | 'cloze', accuracy: number) {
+export function recordActivity(type: 'srs' | 'first_letter' | 'cloze' | 'voice', accuracy: number) {
   const stats = getUserStats();
   const today = new Date().toDateString();
   const lastActive = new Date(stats.lastActiveDate).toDateString();
@@ -165,6 +165,7 @@ export function recordActivity(type: 'srs' | 'first_letter' | 'cloze', accuracy:
   if (type === 'srs') stats.totalReviewsDone += 1;
   if (type === 'first_letter') stats.firstLetterCompletedCount += 1;
   if (type === 'cloze') stats.clozeCompletedCount += 1;
+  if (type === 'voice') stats.voiceCompletedCount = (stats.voiceCompletedCount || 0) + 1;
 
   stats.averageAccuracy = Math.round((stats.averageAccuracy * 4 + accuracy) / 5);
 

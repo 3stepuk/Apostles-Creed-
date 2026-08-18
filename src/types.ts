@@ -69,10 +69,28 @@ export type FadingLevel =
 
 export type ActiveTab = 
   | 'first_letter' 
-  | 'srs_review' 
+  | 'voice_recite'
   | 'deep_theology' 
   | 'cloze_quiz' 
   | 'rosary_guide';
+
+export interface VoiceWordMatch {
+  word: string;
+  status: 'correct' | 'missed' | 'substituted' | 'extra';
+  spokenWord?: string;
+}
+
+export interface VoiceStageResult {
+  stageNumber: number;
+  stageTitle: string;
+  targetText: string;
+  spokenText: string;
+  accuracyScore: number;
+  wordMatches: VoiceWordMatch[];
+  passed: boolean;
+  theologicalInsight?: string;
+  historicalContext?: string;
+}
 
 export interface UserStats {
   streakDays: number;
@@ -80,6 +98,7 @@ export interface UserStats {
   totalReviewsDone: number;
   firstLetterCompletedCount: number;
   clozeCompletedCount: number;
+  voiceCompletedCount?: number;
   averageAccuracy: number;
   masteryPercentage: number;
 }

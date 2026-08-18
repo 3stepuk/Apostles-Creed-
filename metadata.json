@@ -1,6 +1,8 @@
 {
   "name": "Apostles' Creed Memory & Study",
   "description": "Evidence-based memory science application for learning and memorizing the Apostles' Creed for the Rosary with spaced repetition, first-letter retrieval, progressive cloze, and theological depth.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": [
+    "microphone"
+  ],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

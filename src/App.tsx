@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { FirstLetterPractice } from './components/FirstLetterPractice';
-import { SpacedRepetitionDeck } from './components/SpacedRepetitionDeck';
 import { TheologicalDepth } from './components/TheologicalDepth';
-import { ClozeQuiz } from './components/ClozeQuiz';
+import { VoiceStageReciter } from './components/VoiceStageReciter';
+import { QuizAndReviewHub } from './components/QuizAndReviewHub';
 import { RosaryBeadGuide } from './components/RosaryBeadGuide';
 import { MemoryScienceModal } from './components/MemoryScienceModal';
 import { ActiveTab, SRSItem, UserStats } from './types';
 import { initializeSRSItems, getUserStats } from './utils/srsEngine';
 import { audio } from './utils/audioService';
-import { Brain, Layers, Sparkles, BookOpen, Flame, Cross } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('first_letter');
@@ -58,26 +57,33 @@ export default function App() {
         {activeTab === 'first_letter' && (
           <FirstLetterPractice
             onArticleSelect={() => setActiveTab('deep_theology')}
+            onSwitchToVoice={() => setActiveTab('voice_recite')}
             onRefreshStats={handleRefreshStats}
           />
         )}
 
-        {activeTab === 'srs_review' && (
-          <SpacedRepetitionDeck
-            srsItems={srsItems}
-            setSRSItems={setSRSItems}
+        {activeTab === 'voice_recite' && (
+          <VoiceStageReciter
             onRefreshStats={handleRefreshStats}
+            onExploreTheology={(articleId) => {
+              setActiveTab('deep_theology');
+            }}
           />
         )}
 
         {activeTab === 'deep_theology' && (
           <TheologicalDepth
             onPracticeArticle={() => setActiveTab('first_letter')}
+            onVoicePracticeArticle={() => setActiveTab('voice_recite')}
           />
         )}
 
         {activeTab === 'cloze_quiz' && (
-          <ClozeQuiz onRefreshStats={handleRefreshStats} />
+          <QuizAndReviewHub
+            srsItems={srsItems}
+            setSRSItems={setSRSItems}
+            onRefreshStats={handleRefreshStats}
+          />
         )}
 
         {activeTab === 'rosary_guide' && (

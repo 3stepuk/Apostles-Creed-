@@ -19,7 +19,8 @@ import {
   Zap,
   ArrowRight,
   BookOpen,
-  Shuffle
+  Shuffle,
+  Mic
 } from 'lucide-react';
 import { CREED_ARTICLES, FULL_APOSTLES_CREED_ENGLISH, FULL_APOSTLES_CREED_LATIN } from '../data/creedData';
 import { tokenizeText, WordToken, recordActivity } from '../utils/srsEngine';
@@ -30,11 +31,17 @@ type Language = 'en' | 'la';
 
 interface FirstLetterPracticeProps {
   onArticleSelect?: (articleId: number) => void;
+  onSwitchToVoice?: () => void;
+  onSwitchToTheology?: () => void;
+  onSwitchToQuiz?: () => void;
   onRefreshStats: () => void;
 }
 
 export const FirstLetterPractice: React.FC<FirstLetterPracticeProps> = ({
   onArticleSelect,
+  onSwitchToVoice,
+  onSwitchToTheology,
+  onSwitchToQuiz,
   onRefreshStats,
 }) => {
   const [selectedArticleId, setSelectedArticleId] = useState<number | 'all'>('all');
@@ -331,6 +338,19 @@ export const FirstLetterPractice: React.FC<FirstLetterPracticeProps> = ({
               {isReciting ? <Square className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
               <span className="hidden md:inline">{isReciting ? 'Stop Recitation' : 'Recite Aloud'}</span>
             </button>
+
+            {/* Switch to Voice Recitation Mode */}
+            {onSwitchToVoice && (
+              <button
+                id="first-letter-switch-voice-btn"
+                onClick={onSwitchToVoice}
+                className="px-2.5 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold transition cursor-pointer flex items-center gap-1.5"
+                title="Switch to Voice-In Oral Reciter"
+              >
+                <Mic className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline">Voice & Check</span>
+              </button>
+            )}
           </div>
         </div>
 
