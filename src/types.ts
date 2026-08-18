@@ -68,6 +68,7 @@ export type FadingLevel =
   | 'full_hidden';  // Complete recall from memory
 
 export type ActiveTab = 
+  | 'phrase_stepper'
   | 'first_letter' 
   | 'voice_recite'
   | 'deep_theology' 

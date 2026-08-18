@@ -10,7 +10,8 @@ import {
   CheckCircle2,
   Cross,
   Mic,
-  GraduationCap
+  GraduationCap,
+  ListOrdered
 } from 'lucide-react';
 import { audio } from '../utils/audioService';
 
@@ -34,7 +35,8 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleMute,
 }) => {
   const tabs = [
-    { id: 'first_letter' as ActiveTab, label: 'First-Letter Recall', icon: Sparkles, badge: 'Practice' },
+    { id: 'phrase_stepper' as ActiveTab, label: 'Step-by-Step Phrases', icon: ListOrdered, badge: 'Step 1: Start Here' },
+    { id: 'first_letter' as ActiveTab, label: 'Full Creed & First Letters', icon: Sparkles },
     { id: 'voice_recite' as ActiveTab, label: 'Voice & Check', icon: Mic, badge: 'Oral' },
     { id: 'deep_theology' as ActiveTab, label: 'Theological Depth', icon: BookOpen, badge: 'Learn' },
     { id: 'cloze_quiz' as ActiveTab, label: 'Quiz & Review', icon: CheckCircle2, badge: dueSRSCount > 0 ? `${dueSRSCount} due` : undefined },

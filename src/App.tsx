@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { PhraseStepTrainer } from './components/PhraseStepTrainer';
 import { FirstLetterPractice } from './components/FirstLetterPractice';
 import { TheologicalDepth } from './components/TheologicalDepth';
 import { VoiceStageReciter } from './components/VoiceStageReciter';
@@ -11,7 +12,7 @@ import { initializeSRSItems, getUserStats } from './utils/srsEngine';
 import { audio } from './utils/audioService';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('first_letter');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('phrase_stepper');
   const [srsItems, setSRSItems] = useState<Record<string, SRSItem>>({});
   const [userStats, setUserStats] = useState<UserStats>(getUserStats());
   const [isScienceModalOpen, setIsScienceModalOpen] = useState(false);
@@ -54,6 +55,14 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {activeTab === 'phrase_stepper' && (
+          <PhraseStepTrainer
+            onExploreTheology={() => setActiveTab('deep_theology')}
+            onSwitchToFullPractice={() => setActiveTab('first_letter')}
+            onRefreshStats={handleRefreshStats}
+          />
+        )}
+
         {activeTab === 'first_letter' && (
           <FirstLetterPractice
             onArticleSelect={() => setActiveTab('deep_theology')}
@@ -88,7 +97,7 @@ export default function App() {
 
         {activeTab === 'rosary_guide' && (
           <RosaryBeadGuide
-            onPracticeCreed={() => setActiveTab('first_letter')}
+            onPracticeCreed={() => setActiveTab('phrase_stepper')}
           />
         )}
       </main>
