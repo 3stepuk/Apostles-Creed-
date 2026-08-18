@@ -35,11 +35,11 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleMute,
 }) => {
   const tabs = [
-    { id: 'phrase_stepper' as ActiveTab, label: 'Step-by-Step Phrases', icon: ListOrdered, badge: 'Step 1: Start Here' },
-    { id: 'first_letter' as ActiveTab, label: 'Full Creed & First Letters', icon: Sparkles },
-    { id: 'voice_recite' as ActiveTab, label: 'Voice & Check', icon: Mic, badge: 'Oral' },
-    { id: 'deep_theology' as ActiveTab, label: 'Theological Depth', icon: BookOpen, badge: 'Learn' },
-    { id: 'cloze_quiz' as ActiveTab, label: 'Quiz & Review', icon: CheckCircle2, badge: dueSRSCount > 0 ? `${dueSRSCount} due` : undefined },
+    { id: 'phrase_stepper' as ActiveTab, label: 'Step-by-Step', icon: ListOrdered, badge: 'Step 1' },
+    { id: 'first_letter' as ActiveTab, label: 'First Letters', icon: Sparkles },
+    { id: 'voice_recite' as ActiveTab, label: 'Voice Check', icon: Mic },
+    { id: 'deep_theology' as ActiveTab, label: 'Theology', icon: BookOpen },
+    { id: 'cloze_quiz' as ActiveTab, label: 'Quiz & SRS', icon: CheckCircle2, count: dueSRSCount },
     { id: 'rosary_guide' as ActiveTab, label: 'Rosary Guide', icon: Cross },
   ];
 
@@ -47,10 +47,10 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 bg-neutral-950/95 backdrop-blur-md border-b border-neutral-800/80 shadow-md">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Top brand & stats bar */}
-        <div className="flex items-center justify-between py-2.5 sm:py-3.5 gap-2">
+        <div className="flex items-center justify-between py-2 sm:py-3 gap-2">
           {/* Logo & title */}
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-amber-500/20 via-neutral-900 to-amber-700/30 border border-amber-500/30 flex items-center justify-center text-amber-300 shadow-md shadow-amber-950/40">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-amber-500/20 via-neutral-900 to-amber-700/30 border border-amber-500/30 flex items-center justify-center text-amber-300 shadow-md shadow-amber-950/40 shrink-0">
               <span className="font-serif-sacred text-base sm:text-lg font-bold">☩</span>
             </div>
             <div>
@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* User Metrics & Quick Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             {/* Daily Streak */}
             <div 
               id="streak-badge"
@@ -104,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Learn about the cognitive science behind this app"
             >
               <Brain className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Memory Science</span>
+              <span className="hidden sm:inline">Science</span>
             </button>
 
             {/* Sound Toggle */}
@@ -123,8 +123,8 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Navigation Tabs Bar */}
-        <div className="flex items-center gap-1 overflow-x-auto pb-2 sm:pb-0 scrollbar-none border-t border-neutral-850/70 pt-1.5">
+        {/* Navigation Tabs Bar: Responsive Grid ensuring all 6 options are 100% visible */}
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-1 sm:gap-1.5 border-t border-neutral-850/70 py-1.5 sm:py-2">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -137,27 +137,26 @@ export const Header: React.FC<HeaderProps> = ({
                   audio.playSanctuaryChime('keystroke');
                   setActiveTab(tab.id);
                 }}
-                className={`relative flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition cursor-pointer shrink-0 ${
+                className={`relative flex items-center justify-center gap-1.5 px-2 py-2 sm:py-2 rounded-xl text-xs font-semibold transition cursor-pointer text-center w-full ${
                   isActive
-                    ? 'text-amber-200 bg-neutral-900 border border-amber-500/40 shadow-sm'
-                    : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/60 border border-transparent'
+                    ? 'text-amber-200 bg-neutral-900 border border-amber-500/50 shadow-sm'
+                    : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-900/60 border border-neutral-850/40'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-amber-400' : 'text-neutral-500'}`} />
-                <span>{tab.label}</span>
-                {tab.badge && (
-                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                    tab.id === 'cloze_quiz' && dueSRSCount > 0 
-                      ? 'bg-amber-500 text-neutral-950 font-bold' 
-                      : isActive
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        : 'bg-neutral-850 text-neutral-400'
-                  }`}>
+                <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-400' : 'text-neutral-500'}`} />
+                <span className="truncate">{tab.label}</span>
+                {tab.count !== undefined && tab.count > 0 && (
+                  <span className="text-[9px] font-mono px-1 rounded-full bg-amber-500 text-neutral-950 font-bold">
+                    {tab.count}
+                  </span>
+                )}
+                {tab.badge && !tab.count && (
+                  <span className="hidden xl:inline-block text-[9px] font-mono px-1 rounded bg-amber-500/20 text-amber-300">
                     {tab.badge}
                   </span>
                 )}
                 {isActive && (
-                  <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full" />
+                  <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full" />
                 )}
               </button>
             );
